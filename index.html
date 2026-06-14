@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOOPS — Media Anak Muda Indonesia</title>
+  <meta name="description" content="KOOPS — Berita, budaya, musik, street, sport, dan film untuk anak muda Indonesia.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">KOOPS</a>
+    <ul class="nav-links">
+      <li><a href="kategori.html?k=Budaya">Budaya</a></li>
+      <li><a href="kategori.html?k=Politik">Politik</a></li>
+      <li><a href="kategori.html?k=Street">Street</a></li>
+      <li><a href="kategori.html?k=Musik">Musik</a></li>
+      <li><a href="kategori.html?k=Sport">Sport</a></li>
+      <li><a href="kategori.html?k=Film">Film</a></li>
+    </ul>
+    <button class="nav-search" id="searchToggle" aria-label="Cari">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker" id="ticker">
+  <span class="ticker-label">Terkini</span>
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item">Selamat datang di KOOPS</span>
+    <span class="ticker-item">·</span>
+    <span class="ticker-item">Media anak muda Indonesia</span>
+    <span class="ticker-item">·</span>
+    <span class="ticker-item">Berani. Jujur. Blak-blakan.</span>
+    <span class="ticker-item">·</span>
+    <span class="ticker-item">Selamat datang di KOOPS</span>
+    <span class="ticker-item">·</span>
+    <span class="ticker-item">Media anak muda Indonesia</span>
+    <span class="ticker-item">·</span>
+    <span class="ticker-item">Berani. Jujur. Blak-blakan.</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero" id="heroSection">
+    <div class="loading">Memuat artikel...</div>
+  </div>
+
+  <!-- TERBARU -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Terbaru</span>
+      <a href="kategori.html" class="section-more">Lihat semua →</a>
+    </div>
+    <div class="article-grid" id="latestGrid">
+      <div class="loading">Memuat...</div>
+    </div>
+  </div>
+
+  <!-- BUDAYA -->
+  <div class="section" id="sec-budaya">
+    <div class="section-header">
+      <span class="section-title">Budaya</span>
+      <a href="kategori.html?k=Budaya" class="section-more">Lihat semua →</a>
+    </div>
+    <div class="article-grid" id="grid-budaya"></div>
+  </div>
+
+  <!-- MUSIK -->
+  <div class="section" id="sec-musik">
+    <div class="section-header">
+      <span class="section-title">Musik</span>
+      <a href="kategori.html?k=Musik" class="section-more">Lihat semua →</a>
+    </div>
+    <div class="article-grid" id="grid-musik"></div>
+  </div>
+
+  <!-- SPORT -->
+  <div class="section" id="sec-sport">
+    <div class="section-header">
+      <span class="section-title">Sport</span>
+      <a href="kategori.html?k=Sport" class="section-more">Lihat semua →</a>
+    </div>
+    <div class="article-grid" id="grid-sport"></div>
+  </div>
+
+  <!-- FILM -->
+  <div class="section" id="sec-film">
+    <div class="section-header">
+      <span class="section-title">Film</span>
+      <a href="kategori.html?k=Film" class="section-more">Lihat semua →</a>
+    </div>
+    <div class="article-grid" id="grid-film"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">KOOPS</div>
+    <ul class="footer-links">
+      <li><a href="#">Tentang</a></li>
+      <li><a href="mailto:naufalnobe12@gmail.com">Kontak</a></li>
+      <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 KOOPS</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+const CATEGORIES = ['Budaya','Politik','Street','Musik','Sport','Film'];
+
+function formatDate(d) {
+  const date = new Date(d);
+  return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function readTime(content) {
+  const words = content ? content.replace(/<[^>]+>/g,'').split(' ').length : 0;
+  return Math.max(1, Math.ceil(words / 200)) + ' mnt baca';
+}
+
+function coverImg(url, cls='card-cover') {
+  if (url) return `<img src="${url}" class="${cls}" alt="cover" loading="lazy" onerror="this.style.display='none'">`;
+  return `<div class="${cls}-placeholder"></div>`;
+}
+
+function articleCardHTML(a) {
+  return `
+    <div class="article-card" onclick="location.href='artikel.html?id=${a.id}'">
+      ${coverImg(a.cover_url)}
+      <div class="card-cat">${a.category}</div>
+      <div class="card-title">${a.title}</div>
+      <div class="card-meta">${formatDate(a.created_at)} · ${readTime(a.content)}</div>
+    </div>`;
+}
+
+async function loadHero() {
+  const { data } = await db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false}).limit(5);
+  const hero = document.getElementById('heroSection');
+  if (!data || !data.length) {
+    hero.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:4rem"><p>Belum ada artikel.</p></div>`;
+    return;
+  }
+  const main = data[0];
+  const rest = data.slice(1,4);
+  hero.innerHTML = `
+    <div class="hero-main">
+      <a href="artikel.html?id=${main.id}">
+        ${coverImg(main.cover_url,'hero-cover')}
+        <div class="category-badge">${main.category}</div>
+        <div class="hero-title">${main.title}</div>
+        <div class="hero-excerpt">${main.excerpt || ''}</div>
+        <div class="article-meta">
+          <span>Redaksi Koops</span>
+          <span>${formatDate(main.created_at)}</span>
+          <span>${readTime(main.content)}</span>
+        </div>
+      </a>
+    </div>
+    <div class="hero-sidebar">
+      <div class="sidebar-label">Artikel Lainnya</div>
+      ${rest.map(a=>`
+        <div class="sidebar-item" onclick="location.href='artikel.html?id=${a.id}'">
+          <div class="sidebar-cat">${a.category}</div>
+          <div class="sidebar-title">${a.title}</div>
+          <div class="sidebar-meta">${formatDate(a.created_at)} · ${readTime(a.content)}</div>
+        </div>`).join('')}
+    </div>`;
+
+  // Ticker dari judul artikel
+  const track = document.getElementById('tickerTrack');
+  const items = data.map(a=>`<span class="ticker-item">${a.title}</span><span class="ticker-item">·</span>`).join('');
+  track.innerHTML = items + items;
+}
+
+async function loadGrid(elId, category, limit=3) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  let q = db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false}).limit(limit);
+  if (category) q = q.eq('category', category);
+  const { data } = await q;
+  if (!data || !data.length) {
+    el.closest('.section') && (el.closest('.section').style.display='none');
+    return;
+  }
+  el.innerHTML = data.map(articleCardHTML).join('');
+}
+
+async function init() {
+  await loadHero();
+  await loadGrid('latestGrid', null, 6);
+  for (const cat of CATEGORIES) {
+    await loadGrid(`grid-${cat.toLowerCase()}`, cat, 3);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kategori — KOOPS</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .cat-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 2rem; }
+    .cat-tab {
+      padding: 7px 16px; border-radius: 4px; font-size: 12px; font-weight: 600;
+      border: 0.5px solid var(--border2); background: none; color: var(--text3);
+      cursor: pointer; transition: all .15s; letter-spacing: .3px;
+    }
+    .cat-tab:hover { color: var(--text); border-color: var(--text3); }
+    .cat-tab.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .article-grid-2 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    @media(max-width:768px) { .article-grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">KOOPS</a>
+    <ul class="nav-links">
+      <li><a href="kategori.html?k=Budaya">Budaya</a></li>
+      <li><a href="kategori.html?k=Politik">Politik</a></li>
+      <li><a href="kategori.html?k=Street">Street</a></li>
+      <li><a href="kategori.html?k=Musik">Musik</a></li>
+      <li><a href="kategori.html?k=Sport">Sport</a></li>
+      <li><a href="kategori.html?k=Film">Film</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="kategori-header">
+    <div class="kategori-title" id="katTitle">Semua Artikel</div>
+    <div class="kategori-count" id="katCount"></div>
+  </div>
+
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab" data-cat="">Semua</button>
+    <button class="cat-tab" data-cat="Budaya">Budaya</button>
+    <button class="cat-tab" data-cat="Politik">Politik</button>
+    <button class="cat-tab" data-cat="Street">Street</button>
+    <button class="cat-tab" data-cat="Musik">Musik</button>
+    <button class="cat-tab" data-cat="Sport">Sport</button>
+    <button class="cat-tab" data-cat="Film">Film</button>
+  </div>
+
+  <div class="article-grid-2" id="articleGrid">
+    <div class="loading">Memuat artikel...</div>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:3rem">
+  <div class="footer-inner">
+    <div class="footer-logo">KOOPS</div>
+    <ul class="footer-links">
+      <li><a href="#">Tentang</a></li>
+      <li><a href="mailto:naufalnobe12@gmail.com">Kontak</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 KOOPS</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+let currentCat = '';
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+async function loadArticles(cat) {
+  currentCat = cat;
+  const grid = document.getElementById('articleGrid');
+  grid.innerHTML = '<div class="loading">Memuat...</div>';
+
+  document.getElementById('katTitle').textContent = cat || 'Semua Artikel';
+  document.title = `${cat || 'Semua'} — KOOPS`;
+
+  // Update active tab
+  document.querySelectorAll('.cat-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.cat === cat);
+  });
+
+  let q = db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false});
+  if (cat) q = q.eq('category', cat);
+  const { data } = await q;
+
+  document.getElementById('katCount').textContent = data ? `${data.length} artikel` : '';
+
+  if (!data || !data.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><p>Belum ada artikel${cat ? ' di kategori ini' : ''}.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = data.map(a => `
+    <div class="article-card" onclick="location.href='artikel.html?id=${a.id}'">
+      ${a.cover_url ? `<img src="${a.cover_url}" class="card-cover" alt="${a.title}" loading="lazy">` : `<div class="card-cover-placeholder"></div>`}
+      <div class="card-cat">${a.category}</div>
+      <div class="card-title">${a.title}</div>
+      <div class="card-meta">${formatDate(a.created_at)}</div>
+    </div>`).join('');
+}
+
+// Tab clicks
+document.getElementById('catTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-tab');
+  if (btn) {
+    const cat = btn.dataset.cat;
+    history.pushState({}, '', cat ? `?k=${cat}` : 'kategori.html');
+    loadArticles(cat);
+  }
+});
+
+// Init
+const params = new URLSearchParams(location.search);
+const initCat = params.get('k') || '';
+loadArticles(initCat);
+</script>
+</body>
+</html>
