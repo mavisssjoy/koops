@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang — KOOPS</title>
+  <meta name="description" content="KOOPS adalah independent media platform yang mendokumentasikan budaya, gaya hidup urban, dan subkultur kontemporer Palembang.">
+  <meta property="og:title" content="Tentang KOOPS — Palembang from the edge.">
+  <meta property="og:description" content="Independent media platform documenting the cultural landscape of Palembang.">
+  <meta property="og:image" content="https://koopsmedia.vercel.app/og-image.jpg">
+  <meta property="og:url" content="https://koopsmedia.vercel.app/tentang.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tentang KOOPS">
+  <meta name="twitter:description" content="Palembang from the edge.">
+  <meta name="twitter:image" content="https://koopsmedia.vercel.app/og-image.jpg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .about-wrap { max-width: 680px; margin: 4rem auto; padding: 0 2rem; }
+    .about-logo { font-size: 56px; font-weight: 900; color: var(--orange); font-family: 'Arial Black', sans-serif; letter-spacing: -2px; margin-bottom: 8px; }
+    .about-tagline { font-size: 16px; color: var(--text3); margin-bottom: 3rem; font-style: italic; }
+    .about-body { font-size: 18px; line-height: 1.9; color: #b0b0b0; }
+    .about-body p { margin-bottom: 1.5em; }
+    .about-divider { border: none; border-top: 0.5px solid var(--border); margin: 3rem 0; }
+    .about-contact { font-size: 14px; color: var(--text3); }
+    .about-contact a { color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo-wrap">
+      <div class="nav-logo">KOOPS</div>
+      <div class="nav-tagline">Palembang from the edge.</div>
+    </a>
+    <div style="width:32px"></div>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tagline">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner</a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik</a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat</a>
+    <a href="kategori.html?k=Viral" onclick="closeMenu()">Viral</a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya</a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event</a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">Tentang Kami</a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Kirim Tulisan</a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram</a>
+    <a href="mailto:naufalnobe12@gmail.com">Kontak</a>
+  </div>
+</div>
+
+<div class="about-wrap">
+  <div class="about-logo">KOOPS</div>
+  <div class="about-tagline">Palembang from the edge.</div>
+  <div class="about-body">
+    <p>KOOPS is an independent media platform dedicated to curating the cultural landscape, urban lifestyle, and contemporary subcultures of Palembang.</p>
+    <p>We operate at the intersection of local tradition and modern youth culture, documenting everything from grassroots music scenes and the dynamics of new-wave hangout spots, to the untold narratives shaping the city's daily life.</p>
+    <p>Through intimate storytelling and alternative perspectives, we invite you to experience Palembang from the angles that rarely make the mainstream headlines.</p>
+  </div>
+  <hr class="about-divider">
+  <div class="about-contact">
+    Untuk kolaborasi, pertanyaan, atau kirim cerita:<br>
+    <a href="mailto:naufalnobe12@gmail.com">naufalnobe12@gmail.com</a> · 
+    <a href="https://instagram.com/noopaall" target="_blank">@noopaall</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">KOOPS</div>
+      <div class="footer-tagline">Palembang from the edge.</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="tentang.html">Tentang</a></li>
+      <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+      <li><a href="mailto:naufalnobe12@gmail.com">Kontak</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 KOOPS</span>
+  </div>
+</footer>
+
+<script>
+function closeMenu() {
+  document.getElementById('sideMenu').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+}
+document.getElementById('hamburgerBtn').onclick = () => {
+  document.getElementById('sideMenu').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+};
+</script>
+</body>
+</html>
