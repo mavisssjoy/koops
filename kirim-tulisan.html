@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Story — KOOPS</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+      <a href="index.html" class="nav-logo">KOOPS</a>
+    </div>
+    <div style="width:32px"></div>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tag">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Viral" class="viral-link" onclick="closeMenu()">Viral <span>↗</span></a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya <span>↗</span></a>
+    <a href="kategori.html?k=Street" onclick="closeMenu()">Street <span>↗</span></a>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner <span>↗</span></a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik <span>↗</span></a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat <span>↗</span></a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event <span>↗</span></a>
+    <a href="kategori.html?k=Story" onclick="closeMenu()">Story <span>↗</span></a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">About <span>↗</span></a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Submit Story <span>↗</span></a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram <span>↗</span></a>
+    <a href="mailto:naufalnobe12@gmail.com">Contact <span>↗</span></a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="submit-wrap">
+    <div class="submit-title">SUBMIT<br>YOUR STORY</div>
+    <div class="submit-sub">Got a dispatch from the streets? A local trend we missed? A deep dive into Palembang culture? Send it in. We publish the authentic.</div>
+
+    <div id="successMsg" style="display:none;background:#CCFF00;color:#000;padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem">✓ DISPATCH RECEIVED. WE'LL BE IN TOUCH.</div>
+
+    <div class="form-group">
+      <label class="form-label">Full Name *</label>
+      <input type="text" id="fNama" class="form-input" placeholder="NAME_HERE">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address *</label>
+      <input type="email" id="fEmail" class="form-input" placeholder="EMAIL_CONTACT">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Instagram (opsional)</label>
+      <input type="text" id="fIG" class="form-input" placeholder="@USERNAME">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kategori</label>
+      <select id="fKategori" class="form-select">
+        <option>Viral</option>
+        <option>Budaya</option>
+        <option>Street</option>
+        <option>Kuliner</option>
+        <option>Musik</option>
+        <option>Tempat</option>
+        <option>Event</option>
+        <option>Story</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Manifesto / Submission Title *</label>
+      <input type="text" id="fJudul" class="form-input" placeholder="TITLE_OR_SUBJECT">
+    </div>
+    <div class="form-group">
+      <label class="form-label">The Content *</label>
+      <textarea id="fIsi" class="form-textarea" placeholder="DESCRIBE_THE_CHAOS_IN_DETAIL..."></textarea>
+    </div>
+    <button class="btn-submit" onclick="kirimTulisan()">SEND DISPATCH →</button>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:4rem">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">KOOPS</div>
+      <div class="footer-desc">Documenting the culture, stories, and chaos of Palembang — on our own terms.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="tentang.html">About</a></li>
+        <li><a href="mailto:naufalnobe12@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Socials</div>
+      <ul class="footer-links">
+        <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">©2026 KOOPS MEDIA. PALEMBANG INDEPENDENT.</div>
+    <div class="footer-loc">INDONESIA · SINCE 2026</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+async function kirimTulisan() {
+  const nama = document.getElementById('fNama').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const judul = document.getElementById('fJudul').value.trim();
+  const isi = document.getElementById('fIsi').value.trim();
+  if (!nama || !email || !judul || !isi) { alert('FILL ALL REQUIRED FIELDS.'); return; }
+  await db.from('submissions').insert({ nama, email, instagram: document.getElementById('fIG').value.trim(), kategori: document.getElementById('fKategori').value, judul, isi });
+  document.getElementById('successMsg').style.display = 'block';
+  ['fNama','fEmail','fIG','fJudul','fIsi'].forEach(id => document.getElementById(id).value = '');
+}
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+document.getElementById('hamburgerBtn').onclick = () => { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); };
+</script>
+</body>
+</html>

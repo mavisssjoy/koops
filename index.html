@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOOPS — Palembang from the edge.</title>
+  <meta name="description" content="Documenting the culture, stories, and chaos of Palembang — on our own terms.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KOOPS">
+  <meta property="og:title" content="KOOPS — Palembang from the edge.">
+  <meta property="og:description" content="Documenting the culture, stories, and chaos of Palembang — on our own terms.">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="index.html" class="nav-logo">KOOPS</a>
+    </div>
+    <div class="nav-center">
+      <a href="index.html" class="nav-link">LATEST</a>
+      <a href="kategori.html?k=Viral" class="nav-link viral">VIRAL</a>
+      <a href="kategori.html?k=Budaya" class="nav-link">BUDAYA</a>
+      <a href="kategori.html?k=Street" class="nav-link">STREET</a>
+      <a href="kategori.html?k=Kuliner" class="nav-link">KULINER</a>
+      <a href="kategori.html?k=Musik" class="nav-link">MUSIK</a>
+    </div>
+    <button class="nav-search" id="searchToggle" aria-label="Cari">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tag">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Viral" class="viral-link" onclick="closeMenu()">Viral <span>↗</span></a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya <span>↗</span></a>
+    <a href="kategori.html?k=Street" onclick="closeMenu()">Street <span>↗</span></a>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner <span>↗</span></a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik <span>↗</span></a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat <span>↗</span></a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event <span>↗</span></a>
+    <a href="kategori.html?k=Story" onclick="closeMenu()">Story <span>↗</span></a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">About <span>↗</span></a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Submit Story <span>↗</span></a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram <span>↗</span></a>
+    <a href="mailto:naufalnobe12@gmail.com">Contact <span>↗</span></a>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar" id="searchBar">
+  <input type="text" id="searchInput" placeholder="SEARCH_KOOPS..." oninput="doSearch(this.value)">
+  <button onclick="closeSearch()">×</button>
+</div>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero" id="heroSection">
+    <div class="loading">LOADING_DISPATCH...</div>
+  </div>
+</div>
+
+<!-- VIRAL NOW -->
+<div class="container">
+  <div class="section-header">
+    <div class="section-label viral-label">
+      <span class="section-label-icon">↑</span> VIRAL_NOW
+    </div>
+    <a href="kategori.html?k=Viral" class="section-more">LIHAT SEMUA →</a>
+  </div>
+  <div class="viral-grid" id="viralGrid">
+    <div class="loading">LOADING...</div>
+  </div>
+</div>
+
+<!-- LATEST -->
+<div class="container">
+  <div class="article-section">
+    <div class="section-header">
+      <div class="section-label">// TERBARU</div>
+      <a href="kategori.html" class="section-more">LIHAT SEMUA →</a>
+    </div>
+    <div class="article-grid" id="latestGrid">
+      <div class="loading">LOADING...</div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div>
+    <div class="newsletter-title">Jangan ketinggalan cerita.</div>
+    <div class="newsletter-sub">Daftar dan kami kirimin artikel terbaru ke email kamu.</div>
+  </div>
+  <div class="newsletter-form">
+    <input type="email" id="nlEmail" placeholder="EMAIL@DOMAIN.COM">
+    <button onclick="subscribeNewsletter()">DAFTAR SEKARANG</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">KOOPS</div>
+      <div class="footer-desc">Documenting the culture, stories, and chaos of Palembang — on our own terms. Independent Media · Palembang.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="tentang.html">About</a></li>
+        <li><a href="kirim-tulisan.html">Submit Story</a></li>
+        <li><a href="mailto:naufalnobe12@gmail.com">Contact</a></li>
+        <li><a href="kategori.html">Categories</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Socials</div>
+      <ul class="footer-links">
+        <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+        <li><a href="#" target="_blank">Twitter / X</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">©2026 KOOPS MEDIA. PALEMBANG INDEPENDENT.</div>
+    <div class="footer-loc">INDONESIA · SINCE 2026</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+const CATS = {
+  'Viral':'#CCFF00','Budaya':null,'Street':null,'Kuliner':null,
+  'Musik':null,'Tempat':null,'Event':null,'Story':null
+};
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+}
+function readTime(c) {
+  const w = c ? c.replace(/<[^>]+>/g,'').split(' ').length : 0;
+  return Math.max(1, Math.ceil(w/200)) + ' MIN READ';
+}
+function tagColor(cat) {
+  return cat === 'Viral' ? 'viral-tag' : '';
+}
+
+async function loadHero() {
+  const { data } = await db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false}).limit(1);
+  const hero = document.getElementById('heroSection');
+  if (!data || !data.length) {
+    hero.innerHTML = '<div class="empty-state" style="grid-column:1/-1">NO DISPATCH FOUND.</div>';
+    return;
+  }
+  const a = data[0];
+  const coverHTML = a.cover_url
+    ? `<img src="${a.cover_url}" class="hero-image" alt="${a.title}">`
+    : `<div class="hero-image-placeholder"></div>`;
+
+  hero.innerHTML = `
+    <div class="hero-image-wrap">
+      ${coverHTML}
+      <div class="hero-featured-tag">FEATURED</div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-breadcrumb">PALEMBANG / ${a.category.toUpperCase()}</div>
+      <div class="hero-title">${a.title}</div>
+      <div class="hero-excerpt">${a.excerpt || 'Documenting the culture, stories, and chaos of Palembang — on our own terms.'}</div>
+      <a href="artikel.html?id=${a.id}" class="btn-primary">BACA SELENGKAPNYA</a>
+    </div>`;
+}
+
+async function loadViral() {
+  const { data } = await db.from('articles').select('*').eq('status','terbit').eq('category','Viral').order('created_at',{ascending:false}).limit(3);
+  const grid = document.getElementById('viralGrid');
+  if (!data || !data.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">NO VIRAL CONTENT.</div>';
+    return;
+  }
+  const main = data[0];
+  const rest = data.slice(1);
+  grid.innerHTML = `
+    <div class="viral-main">
+      <a href="artikel.html?id=${main.id}">
+        ${main.cover_url ? `<img src="${main.cover_url}" class="viral-img" alt="${main.title}">` : `<div class="viral-img-placeholder"></div>`}
+        <span class="article-tag viral-tag">#${main.category.toUpperCase()}</span>
+        <div class="viral-title">${main.title}</div>
+        <div class="article-meta"><span>${formatDate(main.created_at)}</span><span>${readTime(main.content)}</span></div>
+      </a>
+    </div>
+    <div class="viral-side">
+      ${rest.map(a => `
+        <div class="viral-side-item" onclick="location.href='artikel.html?id=${a.id}'">
+          <span class="article-tag viral-tag">#${a.category.toUpperCase()}</span>
+          <div class="viral-title">${a.title}</div>
+          <div class="article-meta"><span>${formatDate(a.created_at)}</span></div>
+        </div>`).join('')}
+    </div>`;
+}
+
+async function loadLatest() {
+  const { data } = await db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false}).limit(6);
+  const grid = document.getElementById('latestGrid');
+  if (!data || !data.length) { grid.innerHTML = '<div class="empty-state">NO ARTICLES YET.</div>'; return; }
+  grid.innerHTML = data.map((a,i) => `
+    <a href="artikel.html?id=${a.id}" class="article-card">
+      <span class="card-num">0${i+1}</span>
+      ${a.cover_url ? `<img src="${a.cover_url}" class="card-cover" alt="${a.title}" loading="lazy">` : `<div class="card-cover-placeholder"></div>`}
+      <span class="article-tag ${tagColor(a.category)}">${a.category.toUpperCase()}</span>
+      <div class="card-title">${a.title}</div>
+      <div class="card-meta">${formatDate(a.created_at)} · ${readTime(a.content)}</div>
+    </a>`).join('');
+}
+
+let searchTimeout;
+async function doSearch(q) {
+  if (!q.trim()) { loadLatest(); return; }
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(async () => {
+    const { data } = await db.from('articles').select('*').eq('status','terbit')
+      .or(`title.ilike.%${q}%,content.ilike.%${q}%`).order('created_at',{ascending:false});
+    const grid = document.getElementById('latestGrid');
+    if (!data || !data.length) { grid.innerHTML = '<div class="empty-state">NO RESULTS FOUND.</div>'; return; }
+    grid.innerHTML = data.map((a,i) => `
+      <a href="artikel.html?id=${a.id}" class="article-card">
+        <span class="card-num">0${i+1}</span>
+        ${a.cover_url ? `<img src="${a.cover_url}" class="card-cover" alt="${a.title}" loading="lazy">` : `<div class="card-cover-placeholder"></div>`}
+        <span class="article-tag ${tagColor(a.category)}">${a.category.toUpperCase()}</span>
+        <div class="card-title">${a.title}</div>
+        <div class="card-meta">${formatDate(a.created_at)}</div>
+      </a>`).join('');
+  }, 400);
+}
+
+function closeMenu() {
+  document.getElementById('sideMenu').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+}
+document.getElementById('hamburgerBtn').onclick = () => {
+  document.getElementById('sideMenu').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+};
+document.getElementById('searchToggle').onclick = () => {
+  document.getElementById('searchBar').classList.toggle('open');
+  if (document.getElementById('searchBar').classList.contains('open'))
+    document.getElementById('searchInput').focus();
+};
+function closeSearch() {
+  document.getElementById('searchBar').classList.remove('open');
+  document.getElementById('searchInput').value = '';
+  loadLatest();
+}
+
+async function subscribeNewsletter() {
+  const email = document.getElementById('nlEmail').value.trim();
+  if (!email) return;
+  await db.from('newsletter').insert({ email });
+  document.getElementById('nlEmail').value = '';
+  alert('Makasih! Kamu udah terdaftar.');
+}
+
+loadHero(); loadViral(); loadLatest();
+</script>
+</body>
+</html>
