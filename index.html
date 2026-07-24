@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOOPS — Palembang from the edge.</title>
+  <meta name="description" content="KOOPS — Independent media platform documenting the cultural landscape of Palembang.">
+  <meta property="og:title" content="KOOPS — Palembang from the edge.">
+  <meta property="og:description" content="Independent media platform documenting the cultural landscape, urban lifestyle, and contemporary subcultures of Palembang.">
+  <meta property="og:image" content="https://koopsmedia.vercel.app/og-image.png">
+  <meta property="og:url" content="https://koopsmedia.vercel.app">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KOOPS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <a href="index.html" class="nav-logo-wrap">
+      <div class="nav-logo">KOOPS</div>
+      <div class="nav-tagline">Palembang from the edge.</div>
+    </a>
+    <div class="nav-right">
+      <a href="https://instagram.com/noopaall" target="_blank" class="nav-ig">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      </a>
+      <button class="nav-search" id="searchToggle" aria-label="Cari">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tagline">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner</a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik</a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat</a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya</a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event</a>
+    <a href="kategori.html?k=Story" onclick="closeMenu()">Story</a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">Tentang Kami</a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Kirim Tulisan</a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram</a>
+    <a href="mailto:naufalnobe12@gmail.com">Kontak</a>
+  </div>
+</div>
+
+<div class="search-bar" id="searchBar">
+  <input type="text" id="searchInput" placeholder="Cari artikel..." oninput="doSearch(this.value)">
+  <button onclick="closeSearch()">×</button>
+</div>
+
+<div class="container" style="padding-top:2rem">
+
+  <div class="hero-statement">
+    <div class="hero-statement-label">Independent Media · Palembang</div>
+    <div class="hero-statement-headline">Documenting the culture, stories, and chaos of Palembang — on our own terms.</div>
+  </div>
+
+  <div class="cat-tabs-home" id="catTabsHome">
+    <button class="cat-tab-home active" data-cat="">Semua</button>
+    <button class="cat-tab-home" data-cat="Kuliner">Kuliner</button>
+    <button class="cat-tab-home" data-cat="Musik">Musik</button>
+    <button class="cat-tab-home" data-cat="Tempat">Tempat</button>
+    <button class="cat-tab-home" data-cat="Budaya">Budaya</button>
+    <button class="cat-tab-home" data-cat="Event">Event</button>
+    <button class="cat-tab-home" data-cat="Story">Story</button>
+  </div>
+
+  <div id="heroSection" class="hero-feed">
+    <div class="skeleton skeleton-cover"></div>
+  </div>
+
+  <div id="trendingSection" class="trending-section" style="display:none">
+    <div class="trending-header">
+      <div class="trending-title">🔥 Trending</div>
+    </div>
+    <div class="trending-list" id="trendingList"></div>
+  </div>
+
+  <div class="newsletter-bar">
+    <div class="newsletter-text">
+      <div class="newsletter-title">Jangan ketinggalan cerita dari Palembang.</div>
+      <div class="newsletter-sub">Daftar dan kami kirimin artikel terbaru ke email kamu.</div>
+    </div>
+    <div class="newsletter-form">
+      <input type="email" id="nlEmail" placeholder="email@kamu.com">
+      <button onclick="subscribeNewsletter()">Daftar</button>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">KOOPS</div>
+      <div class="footer-tagline">Palembang from the edge.</div>
+      <div class="footer-desc">Independent media platform documenting the cultural landscape, urban lifestyle, and contemporary subcultures of Palembang.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Kategori</div>
+      <ul class="footer-links">
+        <li><a href="kategori.html?k=Kuliner">Kuliner</a></li>
+        <li><a href="kategori.html?k=Musik">Musik</a></li>
+        <li><a href="kategori.html?k=Tempat">Tempat</a></li>
+        <li><a href="kategori.html?k=Budaya">Budaya</a></li>
+        <li><a href="kategori.html?k=Event">Event</a></li>
+        <li><a href="kategori.html?k=Story">Story</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Koops</div>
+      <ul class="footer-links">
+        <li><a href="tentang.html">Tentang</a></li>
+        <li><a href="kirim-tulisan.html">Kirim Tulisan</a></li>
+        <li><a href="mailto:naufalnobe12@gmail.com">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 KOOPS. Palembang Independent.</span>
+    <a href="https://instagram.com/noopaall" target="_blank" class="footer-ig">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      @noopaall
+    </a>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+function timeAgo(d) {
+  const diff = Math.floor((Date.now() - new Date(d).getTime()) / 1000);
+  if (diff < 60) return 'Baru saja';
+  if (diff < 3600) return Math.floor(diff/60) + ' menit lalu';
+  if (diff < 86400) return Math.floor(diff/3600) + ' jam lalu';
+  if (diff < 604800) return Math.floor(diff/86400) + ' hari lalu';
+  if (diff < 2592000) return Math.floor(diff/604800) + ' minggu lalu';
+  return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function readTime(content) {
+  const words = content ? content.replace(/<[^>]+>/g,'').split(' ').length : 0;
+  return Math.max(1, Math.ceil(words / 200)) + ' mnt baca';
+}
+function initials(name) {
+  return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function authorHTML(a, size='small') {
+  const name = a.author_name || 'Redaksi Koops';
+  const photo = a.author_photo;
+  const sizeClass = size === 'big' ? 'author-avatar' : 'card-author-avatar';
+  if (photo) {
+    return `<img src="${photo}" class="${sizeClass}" alt="${name}" style="object-fit:cover">`;
+  }
+  return `<div class="${sizeClass}">${initials(name)}</div>`;
+}
+
+function articleCardHTML(a, big=false) {
+  const cover = a.cover_url
+    ? `<img src="${a.cover_url}" class="${big?'hero-cover':'card-cover'}" alt="${a.title}" loading="lazy">`
+    : `<div class="${big?'hero-cover':'card-cover'}-placeholder"></div>`;
+  const authorName = a.author_name || 'Redaksi Koops';
+  if (big) {
+    return `
+      <a href="artikel.html?id=${a.id}" class="hero-card">
+        ${cover}
+        <div class="hero-overlay">
+          <div class="hero-card-body">
+            <span class="category-badge">${a.category}</span>
+            <div class="hero-title">${a.title}</div>
+            <div class="hero-excerpt">${a.excerpt||''}</div>
+            <div class="hero-author">
+              ${authorHTML(a, 'big')}
+              <div class="author-info">${authorName} · ${timeAgo(a.created_at)} · ${readTime(a.content)}</div>
+            </div>
+          </div>
+        </div>
+      </a>`;
+  }
+  return `
+    <a href="artikel.html?id=${a.id}" class="article-card">
+      <div class="card-cover-wrap">${cover}</div>
+      <div class="card-cat">${a.category}</div>
+      <div class="card-title">${a.title}</div>
+      <div class="card-author">
+        ${authorHTML(a, 'small')}
+        <span class="card-author-name">${authorName}</span>
+      </div>
+      <div class="card-meta">${timeAgo(a.created_at)} · ${readTime(a.content)}</div>
+    </a>`;
+}
+
+function skeletonGrid(n) {
+  let html = '<div class="skeleton-grid">';
+  for (let i=0;i<n;i++) html += `<div><div class="skeleton skeleton-cover"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-line"></div></div>`;
+  return html + '</div>';
+}
+
+let currentCat = '';
+
+async function loadFeed(cat='') {
+  currentCat = cat;
+  const hero = document.getElementById('heroSection');
+  hero.innerHTML = skeletonGrid(4);
+
+  let q = db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false});
+  if (cat) q = q.eq('category', cat);
+  const { data } = await q;
+
+  if (!data || !data.length) {
+    hero.innerHTML = '<div class="empty-state"><p>Belum ada artikel.</p></div>';
+    document.getElementById('trendingSection').style.display = 'none';
+    return;
+  }
+  const main = data[0];
+  const rest = data.slice(1);
+  let html = articleCardHTML(main, true);
+  if (rest.length) {
+    html += '<div class="article-grid">' + rest.map(a => articleCardHTML(a)).join('') + '</div>';
+  }
+  hero.innerHTML = html;
+
+  loadTrending();
+}
+
+async function loadTrending() {
+  const { data } = await db.from('articles').select('*').eq('status','terbit').order('views',{ascending:false}).limit(3);
+  const section = document.getElementById('trendingSection');
+  if (!data || !data.length || !data[0].views) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  document.getElementById('trendingList').innerHTML = data.map((a,i) => `
+    <a href="artikel.html?id=${a.id}" class="trending-item" style="text-decoration:none">
+      <div class="trending-num">0${i+1}</div>
+      <div class="trending-info">
+        <span class="trending-cat">${a.category}</span>
+        <div class="trending-text">${a.title}</div>
+      </div>
+    </a>`).join('');
+}
+
+let searchTimeout;
+async function doSearch(q) {
+  if (!q.trim()) { loadFeed(currentCat); return; }
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(async () => {
+    const { data } = await db.from('articles').select('*').eq('status','terbit')
+      .or(`title.ilike.%${q}%,content.ilike.%${q}%`).order('created_at',{ascending:false});
+    const hero = document.getElementById('heroSection');
+    document.getElementById('trendingSection').style.display = 'none';
+    if (!data || !data.length) {
+      hero.innerHTML = '<div class="empty-state"><p>Artikel tidak ditemukan.</p></div>';
+      return;
+    }
+    hero.innerHTML = '<div class="article-grid">' + data.map(a => articleCardHTML(a)).join('') + '</div>';
+  }, 400);
+}
+
+document.getElementById('catTabsHome').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-tab-home');
+  if (!btn) return;
+  document.querySelectorAll('.cat-tab-home').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadFeed(btn.dataset.cat);
+});
+
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+document.getElementById('hamburgerBtn').onclick = () => { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); };
+document.getElementById('searchToggle').onclick = () => { const bar = document.getElementById('searchBar'); bar.classList.toggle('open'); if (bar.classList.contains('open')) document.getElementById('searchInput').focus(); };
+function closeSearch() { document.getElementById('searchBar').classList.remove('open'); document.getElementById('searchInput').value = ''; loadFeed(currentCat); }
+
+async function subscribeNewsletter() {
+  const email = document.getElementById('nlEmail').value.trim();
+  if (!email) return;
+  await db.from('newsletter').insert({ email });
+  document.getElementById('nlEmail').value = '';
+  alert('Terima kasih! Kamu sudah terdaftar.');
+}
+
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => { backToTop.classList.toggle('show', window.scrollY > 400); });
+backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+loadFeed();
+</script>
+</body>
+</html>
