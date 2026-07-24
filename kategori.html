@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kategori — KOOPS</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2rem; }
+    .cat-tab { padding: 7px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 0.5px solid var(--border2); background: none; color: var(--text3); cursor: pointer; transition: all .15s; }
+    .cat-tab:hover { color: var(--text); border-color: var(--text3); }
+    .cat-tab.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a href="index.html" class="nav-logo-wrap">
+      <div class="nav-logo">KOOPS</div>
+      <div class="nav-tagline">Palembang from the edge.</div>
+    </a>
+    <div style="width:32px"></div>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tagline">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner</a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik</a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat</a>
+    <a href="kategori.html?k=Viral" onclick="closeMenu()">Viral</a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya</a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event</a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">Tentang Kami</a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Kirim Tulisan</a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram</a>
+    <a href="mailto:naufalnobe12@gmail.com">Kontak</a>
+  </div>
+</div>
+
+<div class="container" style="padding-top:2rem">
+  <div class="kategori-header">
+    <div class="kategori-title" id="katTitle">Semua Artikel</div>
+    <div class="kategori-count" id="katCount"></div>
+  </div>
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab" data-cat="">Semua</button>
+    <button class="cat-tab" data-cat="Kuliner">Kuliner</button>
+    <button class="cat-tab" data-cat="Musik">Musik</button>
+    <button class="cat-tab" data-cat="Tempat">Tempat</button>
+    <button class="cat-tab" data-cat="Viral">Viral</button>
+    <button class="cat-tab" data-cat="Budaya">Budaya</button>
+    <button class="cat-tab" data-cat="Event">Event</button>
+  </div>
+  <div class="article-grid" id="articleGrid"><div class="loading">Memuat...</div></div>
+</div>
+
+<footer class="footer" style="margin-top:3rem">
+  <div class="footer-inner">
+    <div><div class="footer-logo">KOOPS</div><div class="footer-tagline">Palembang from the edge.</div></div>
+    <ul class="footer-links">
+      <li><a href="tentang.html">Tentang</a></li>
+      <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 KOOPS</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+function formatDate(d) { return new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}); }
+
+async function loadArticles(cat) {
+  const grid = document.getElementById('articleGrid');
+  grid.innerHTML = '<div class="loading">Memuat...</div>';
+  document.getElementById('katTitle').textContent = cat || 'Semua Artikel';
+  document.title = `${cat||'Semua'} — KOOPS`;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+  let q = db.from('articles').select('*').eq('status','terbit').order('created_at',{ascending:false});
+  if (cat) q = q.eq('category', cat);
+  const { data } = await q;
+  document.getElementById('katCount').textContent = data ? `${data.length} artikel` : '';
+  if (!data || !data.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><p>Belum ada artikel${cat?' di kategori ini':''}.</p></div>`; return; }
+  grid.innerHTML = data.map(a => `
+    <a href="artikel.html?id=${a.id}" class="article-card">
+      ${a.cover_url?`<img src="${a.cover_url}" class="card-cover" alt="${a.title}" loading="lazy">`:`<div class="card-cover-placeholder"></div>`}
+      <div class="card-cat">${a.category}</div>
+      <div class="card-title">${a.title}</div>
+      <div class="card-meta">${formatDate(a.created_at)}</div>
+    </a>`).join('');
+}
+
+document.getElementById('catTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-tab');
+  if (btn) { history.pushState({},'',(btn.dataset.cat?`?k=${btn.dataset.cat}`:'kategori.html')); loadArticles(btn.dataset.cat); }
+});
+
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+document.getElementById('hamburgerBtn').onclick = () => { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); };
+
+loadArticles(new URLSearchParams(location.search).get('k')||'');
+</script>
+</body>
+</html>
