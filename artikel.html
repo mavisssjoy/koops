@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artikel — KOOPS</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta id="ogTitle" property="og:title" content="KOOPS">
+  <meta id="ogDesc" property="og:description" content="Palembang from the edge.">
+  <meta id="ogImage" property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--orange); width: 0%; z-index: 1000; transition: width .1s; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); padding: 1rem 0; transition: color .15s; }
+    .back-link:hover { color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+      <a href="index.html" class="nav-logo">KOOPS</a>
+    </div>
+    <div style="width:32px"></div>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <button class="side-menu-close" onclick="closeMenu()">×</button>
+  <div class="side-menu-logo">KOOPS</div>
+  <div class="side-menu-tag">Palembang from the edge.</div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Kategori</div>
+    <a href="kategori.html?k=Viral" class="viral-link" onclick="closeMenu()">Viral <span>↗</span></a>
+    <a href="kategori.html?k=Budaya" onclick="closeMenu()">Budaya <span>↗</span></a>
+    <a href="kategori.html?k=Street" onclick="closeMenu()">Street <span>↗</span></a>
+    <a href="kategori.html?k=Kuliner" onclick="closeMenu()">Kuliner <span>↗</span></a>
+    <a href="kategori.html?k=Musik" onclick="closeMenu()">Musik <span>↗</span></a>
+    <a href="kategori.html?k=Tempat" onclick="closeMenu()">Tempat <span>↗</span></a>
+    <a href="kategori.html?k=Event" onclick="closeMenu()">Event <span>↗</span></a>
+    <a href="kategori.html?k=Story" onclick="closeMenu()">Story <span>↗</span></a>
+  </div>
+  <div class="side-menu-section">
+    <div class="side-menu-label">Koops</div>
+    <a href="tentang.html" onclick="closeMenu()">About <span>↗</span></a>
+    <a href="kirim-tulisan.html" onclick="closeMenu()">Submit Story <span>↗</span></a>
+    <a href="https://instagram.com/noopaall" target="_blank">Instagram <span>↗</span></a>
+    <a href="mailto:naufalnobe12@gmail.com">Contact <span>↗</span></a>
+  </div>
+</div>
+
+<div id="articleWrap"></div>
+
+<div class="container">
+  <div class="related-wrap" id="relatedSection" style="display:none">
+    <div class="section-header" style="margin-bottom:0">
+      <div class="section-label">// BACA JUGA</div>
+    </div>
+    <div class="related-grid article-grid" id="relatedGrid"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">KOOPS</div>
+      <div class="footer-desc">Documenting the culture, stories, and chaos of Palembang — on our own terms.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="tentang.html">About</a></li>
+        <li><a href="kirim-tulisan.html">Submit Story</a></li>
+        <li><a href="mailto:naufalnobe12@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Socials</div>
+      <ul class="footer-links">
+        <li><a href="https://instagram.com/noopaall" target="_blank">Instagram</a></li>
+        <li><a href="#" target="_blank">Twitter / X</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">©2026 KOOPS MEDIA. PALEMBANG INDEPENDENT.</div>
+    <div class="footer-loc">INDONESIA · SINCE 2026</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script>
+function formatDate(d) { return new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}); }
+function readTime(c) { const w = c ? c.replace(/<[^>]+>/g,'').split(' ').length : 0; return Math.max(1, Math.ceil(w/200)) + ' menit baca'; }
+
+function shareWA(title, url) { window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,'_blank'); }
+function shareX(title, url) { window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,'_blank'); }
+
+async function loadArticle() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { location.href = 'index.html'; return; }
+
+  const { data, error } = await db.from('articles').select('*').eq('id', id).single();
+  if (error || !data) {
+    document.getElementById('articleWrap').innerHTML = '<div class="empty-state" style="padding:4rem">DISPATCH NOT FOUND. <a href="index.html" style="color:var(--orange)">← BACK</a></div>';
+    return;
+  }
+
+  document.title = `${data.title} — KOOPS`;
+  document.getElementById('ogTitle').content = data.title + ' — KOOPS';
+  document.getElementById('ogDesc').content = data.excerpt || data.content.replace(/<[^>]+>/g,'').slice(0,160);
+  if (data.cover_url) document.getElementById('ogImage').content = data.cover_url;
+
+  const url = location.href;
+  const isViral = data.category === 'Viral';
+
+  document.getElementById('articleWrap').innerHTML = `
+    <div class="container">
+      <a href="javascript:history.back()" class="back-link">← BACK TO KOOPS</a>
+    </div>
+    ${data.cover_url ? `<img src="${data.cover_url}" class="article-hero-cover" alt="${data.title}">` : `<div class="article-hero-placeholder"></div>`}
+    ${data.cover_credit ? `<div class="article-cover-credit">📷 ${data.cover_credit}</div>` : ''}
+    <div class="container">
+      <div class="article-wrap">
+        <div class="article-breadcrumb">
+          <span style="color:var(--text3)">KOOPS</span>
+          <span style="color:var(--text3)">/</span>
+          <span style="color:${isViral ? 'var(--green)' : 'var(--orange)'}">${data.category.toUpperCase()}</span>
+        </div>
+        <h1 class="article-title">${data.title}</h1>
+        <div class="article-byline">
+          <span class="article-author">REDAKSI KOOPS</span>
+          <span class="article-date">${formatDate(data.created_at)}</span>
+          <span class="article-readtime">${readTime(data.content)}</span>
+        </div>
+        <div class="article-content">${data.content}</div>
+        <div class="share-bar">
+          <span class="share-label">SHARE:</span>
+          <button class="share-btn" onclick="shareWA('${data.title.replace(/'/g,"\\'")}','${url}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WHATSAPP
+          </button>
+          <button class="share-btn" onclick="shareX('${data.title.replace(/'/g,"\\'")}','${url}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            TWITTER/X
+          </button>
+        </div>
+      </div>
+    </div>`;
+
+  const { data: related } = await db.from('articles').select('*').eq('status','terbit').eq('category', data.category).neq('id', id).limit(3).order('created_at',{ascending:false});
+  if (related && related.length) {
+    document.getElementById('relatedSection').style.display = 'block';
+    document.getElementById('relatedGrid').innerHTML = related.map((a,i) => `
+      <a href="artikel.html?id=${a.id}" class="article-card">
+        <span class="card-num">0${i+1}</span>
+        ${a.cover_url ? `<img src="${a.cover_url}" class="card-cover" alt="${a.title}" loading="lazy">` : `<div class="card-cover-placeholder"></div>`}
+        <span class="article-tag">${a.category.toUpperCase()}</span>
+        <div class="card-title">${a.title}</div>
+        <div class="card-meta">${new Date(a.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}</div>
+      </a>`).join('');
+  }
+}
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const p = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+  document.getElementById('progressBar').style.width = Math.min(p,100) + '%';
+});
+
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+document.getElementById('hamburgerBtn').onclick = () => { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); };
+
+loadArticle();
+</script>
+</body>
+</html>
